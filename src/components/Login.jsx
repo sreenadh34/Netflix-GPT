@@ -2,21 +2,25 @@ import Header from './Header';
 import { BG_URL } from '../utils/constants';
 import { useState, useRef } from 'react';
 import { checkValidData } from '../utils/validate';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile} from "firebase/auth";
 import { auth } from '../utils/firebase';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 
 const Login = () => {
 
     const [isSignInForm, setIsSignInForm] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
+    const navigate =useNavigate();
+    const dispatch = useDispatch();
 
     const name = useRef(null);
     const email = useRef(null);
     const password =useRef(null);
 
     const handleButtonClick = () => {
-    const message = checkValidData(email.current.value, password.current.value, name.current.value);
+    const message = checkValidData(email.current.value, password.current.value, );
     setErrorMessage(message);
 
     if(message) return;
@@ -27,7 +31,28 @@ const Login = () => {
           .then((userCredential) => {
           // Signed up 
           const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value, photoURL: "https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-w3lqr61qe57e9yt8.jpg"
+          }).then(() => {
+            // Profile updated!
+              const {uid, email, displayName, photoURL } = auth.currentUser;
+               dispatch(
+                addUser({
+                  uid:uid, 
+                  email: email, 
+                  displayName: displayName, 
+                  photoURL: photoURL
+                })
+              );
+            
+            navigate("/browse")
+            // ...
+          }).catch((error) => {
+            // An error occurred
+            setErrorMessage(error.message);
+          });
           console.log(user);
+          
           // ...
          })
          .catch((error) => {
@@ -43,6 +68,7 @@ const Login = () => {
     // Signed in 
     const user = userCredential.user;
     console.log(user);
+    navigate("/browse")
     // ...
   })
   .catch((error) => {
@@ -75,7 +101,7 @@ const Login = () => {
 
       {!isSignInForm && (
           <input
-          ref={name}
+            ref={name}
             type="text"
             placeholder="Full Name"
             className="p-4 my-4 w-full bg-gray-700"
@@ -91,6 +117,7 @@ const Login = () => {
           ref={password}
           type="password"
           placeholder="Password"
+          autoComplete='on'
           className="p-4 my-4 w-full bg-gray-700"
         />
         <p className="text-red-500 font-bold text-lg py-2">{errorMessage}</p>
