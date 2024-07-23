@@ -18,7 +18,7 @@ const user =useSelector(store => store.user);
    };
 
    useEffect(() => {
-      onAuthStateChanged(auth, (user) => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
           const {uid, email, displayName, photoURL } = user;
           dispatch(addUser({uid:uid, email: email, displayName: displayName, photoURL: photoURL
@@ -31,6 +31,7 @@ const user =useSelector(store => store.user);
           navigate("/");
         }
       });
+      return () => unsubscribe();
     },[])
   return (
      <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-between">

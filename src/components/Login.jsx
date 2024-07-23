@@ -1,5 +1,5 @@
 import Header from './Header';
-import { BG_URL } from '../utils/constants';
+import { BG_URL, USER_AVATAR } from '../utils/constants';
 import { useState, useRef } from 'react';
 import { checkValidData } from '../utils/validate';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile} from "firebase/auth";
@@ -30,7 +30,7 @@ const Login = () => {
           // Signed up 
           const user = userCredential.user;
           updateProfile(user, {
-            displayName: name.current.value, photoURL: "https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-w3lqr61qe57e9yt8.jpg"
+            displayName: name.current.value, photoURL: USER_AVATAR
           }).then(() => {
             // Profile updated!
               const {uid, email, displayName, photoURL } = auth.currentUser;
