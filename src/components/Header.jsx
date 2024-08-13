@@ -50,8 +50,8 @@ const showGptSearch = useSelector((store) => store.gpt.showGptSearch)
         <img className="w-44 mx-auto md:mx-0" src={LOGO} alt="logo" />
         
         {user && (
-         <div className='flex p-2'> 
-        { showGptSearch && (<select  className="p-2 m-2 bg-gray-900 text-white" onChange={handleLanguageChange}>
+         <div className='flex p-2 justify-between'> 
+        { showGptSearch && (<select  className="p-2 m-2 bg-gray-900 text-white " onChange={handleLanguageChange}>
          {SUPPORTED_LANGUAGES.map((lang) => (
                 <option key={lang.identifier} value={lang.identifier}>
                   {lang.name}
@@ -64,7 +64,7 @@ const showGptSearch = useSelector((store) => store.gpt.showGptSearch)
           >
            {showGptSearch ? "Homepage" : "GPT Search"} 
           </button>      
-         <img className='w-12 h-12' src= {user?.photoURL} alt="user Icon" />
+         <img className='hidden md:block w-12 h-12' src= {user?.photoURL} alt="user Icon" />
        <button onClick={handleSignOut} className='font-bold text-white'>(Sign Out)</button>
     </div>
         )}
