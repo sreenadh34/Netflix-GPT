@@ -55,7 +55,7 @@ You need to obtain API keys for both TMDB and OpenAI.
    
      VITE_OPENAI_KEY=your_openai_api_key
 
-5. **Start the development server:**
+4. **Start the development server:**
 
    ```bash
     npm run dev
